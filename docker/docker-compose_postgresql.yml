@@ -1,0 +1,18 @@
+version: "3.6"
+
+services:
+  postgres:
+    image: "postgres:14.2"
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: withpsql
+    volumes:
+      - pgdb-data:/var/lib/postgresql/data/
+
+volumes:
+  pgdb-data1:
+  cache:
