@@ -3,6 +3,9 @@ DSN="host=localhost port=5432 user=postgres password=password dbname=postgres ss
 HTTP_PORT="9000"
 LOCAL_BIN:=$(CURDIR)/bin
 
+## getdeps: installs dependencies
+getdeps:
+	GOBIN=$(LOCAL_BIN) go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 
 ## build: Build binary
 build:
@@ -26,6 +29,7 @@ clean:
 ## start: an alias to run
 start: run
 
+## race: checks for data race
 race:
 	cd ./cmd && \
 	export DSN=${DSN} && \
@@ -45,18 +49,27 @@ restart: stop start
 test:
 	go test -v ./...
 
+## testrace: checks tests for data race
 testrace:
 	go test -race -v ./...
 
-
+## testcov: collects test coverage
 testcov:
 	go test -coverprofile=coverage.out -v ./...
 
+## testout: displays test coverage as html in browser
 testout:
 	go tool cover -html=coverage.out
 
-## docker up and down
+## du: starts all the docker-compose containers in detached mode
 du:
 	docker-compose up -d
-dd:
+
+## dd: stops all docker-compose containers
+dd :
 	docker-compose down
+
+## lint: runs linter for all files in the project
+lint:
+	cd ./bin && \
+	golangci-lint run ../...
